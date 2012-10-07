@@ -1,5 +1,5 @@
 ﻿using System;
-using Eirikb.SharePoint.Extreme.questions;
+using Eirikb.SharePoint.Extreme.Questions;
 using log4net;
 
 namespace Eirikb.SharePoint.Extreme

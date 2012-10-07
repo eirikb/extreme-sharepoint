@@ -34,14 +34,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.0\lib\net35-full\log4net.dll</HintPath>
+      <HintPath>packages\log4net.2.0.0\lib\net35-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="ManyConsole">
-      <HintPath>..\packages\ManyConsole.0.4.2.12\lib\ManyConsole.dll</HintPath>
+      <HintPath>packages\ManyConsole.0.4.2.12\lib\ManyConsole.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
     <Reference Include="NDesk.Options">
-      <HintPath>..\packages\NDesk.Options.0.2.1\lib\NDesk.Options.dll</HintPath>
+      <HintPath>packages\NDesk.Options.0.2.1\lib\NDesk.Options.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,7 +49,6 @@
   <ItemGroup>
     <Compile Include="commands\Exit.cs" />
     <Compile Include="commands\Ls.cs" />
-    <Compile Include="Control.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="commands\GetTime.cs" />
     <Compile Include="ListBuilder.cs" />

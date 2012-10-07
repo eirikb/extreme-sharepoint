@@ -12,7 +12,7 @@ namespace Eirikb.SharePoint.Extreme
     {
         private static readonly ILog Log = LogManager.GetLogger("Extreme-SharePoint");
 
-        private static void Main(string[] args)
+        private static void Main()
         {
             Log.Info("Connecting to SharePoint...");
             using (var site = new SPSite("http://localhost"))
