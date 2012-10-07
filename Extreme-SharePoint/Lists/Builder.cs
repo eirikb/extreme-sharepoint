@@ -68,10 +68,9 @@ namespace Eirikb.SharePoint.Extreme.Lists
                     new Field {Title = "Success", Type = SPFieldType.Boolean, Required = true},
                     new Field {Title = "Time", Type = SPFieldType.DateTime, Required = true},
                 });
-            var title = list.Fields.GetFieldByInternalName("Created");
-            var view = list.DefaultView;
-            view.ViewFields.Add(title);
-            view.Update();
+            list.ReadSecurity = 2;
+            list.WriteSecurity = 2;
+            list.Update();
             return list;
         }
 

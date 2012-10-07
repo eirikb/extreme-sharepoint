@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Exit.cs" />
+    <Compile Include="Commands\LogLevel.cs" />
     <Compile Include="Commands\Ls.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Commands\GetTime.cs" />

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Net;
 using Microsoft.SharePoint;
@@ -41,28 +40,36 @@ namespace Eirikb.SharePoint.Extreme
 
                     using (var client = new WebClient())
                     {
-                        var url = new Uri(new Uri("" + host),question.Question);
-                        Log.DebugFormat("Sending request to {0}", url);
-                        var result = client.DownloadString(url);
-                        Log.DebugFormat("Got result: {0}", result);
-                        var points = question.Run(result);
-                        Log.DebugFormat("Points : {0}", points);
-                        var statsItem = stats.AddItem();
-                        statsItem["Success"] = points > 0;
-                        statsItem["Author"] = player;
-                        statsItem["Time"] = DateTime.Now;
-                        statsItem.Update();
-
-                        int currentScore;
-                        if (!int.TryParse("" + teamScore["Score"], out currentScore))
+                        try
                         {
-                            Log.WarnFormat("Unable to format {0} to int for teamscore of team {1}", teamScore["Score"],
-                                           team.Title);
-                            return;
+                            var url = new UriBuilder("" + host) {Query = question.Question}.Uri.AbsoluteUri;
+                            Log.DebugFormat("Sending request to {0}", url);
+                            var result = client.DownloadString(url);
+                            Log.DebugFormat("Got result: {0}", result);
+                            var points = question.Run(result);
+                            Log.DebugFormat("Points : {0}", points);
+                            var statsItem = stats.AddItem();
+                            statsItem["Success"] = points > 0;
+                            statsItem["Author"] = player;
+                            statsItem["Time"] = DateTime.Now;
+                            statsItem.Update();
+
+                            int currentScore;
+                            if (!int.TryParse("" + teamScore["Score"], out currentScore))
+                            {
+                                Log.WarnFormat("Unable to format {0} to int for teamscore of team {1}",
+                                               teamScore["Score"],
+                                               team.Title);
+                                return;
+                            }
+                            currentScore += points;
+                            teamScore["Score"] = currentScore;
+                            teamScore.Update();
                         }
-                        currentScore += points;
-                        teamScore["Score"] = currentScore;
-                        teamScore.Update();
+                        catch (Exception e)
+                        {
+                            Log.Error("Request to team " + team.Title, e);
+                        }
                     }
                 });
         }

@@ -53,7 +53,9 @@ namespace Eirikb.SharePoint.Extreme
 
                     while (true)
                     {
-                        var cmd = new[] {Console.ReadLine()};
+                        var line = Console.ReadLine();
+                        var cmd = new string[]{};
+                        if (line != null) cmd = line.Split(' ');
                         var result = ConsoleCommandDispatcher.DispatchCommand(commands, cmd, Console.Out);
                         if (result < -1) break;
                     }
