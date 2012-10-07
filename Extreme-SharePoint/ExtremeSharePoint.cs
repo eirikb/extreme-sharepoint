@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading;
+using Eirikb.SharePoint.Extreme.Lists;
 using ManyConsole;
 using Microsoft.SharePoint;
+using Microsoft.SharePoint.Linq;
 using log4net;
 
 namespace Eirikb.SharePoint.Extreme
@@ -12,21 +15,24 @@ namespace Eirikb.SharePoint.Extreme
     {
         private static readonly ILog Log = LogManager.GetLogger("Extreme-SharePoint");
 
+        public static string URL = "http://localhost";
+
         public static void Start(Type start)
         {
+            var confurl = ConfigurationManager.AppSettings["url"];
+            if (!string.IsNullOrEmpty(confurl)) URL = confurl;
+
             Log.Info("Connecting to SharePoint...");
-            using (var site = new SPSite("http://localhost"))
+            using (var site = new SPSite(URL))
             {
                 using (var web = site.OpenWeb())
                 {
                     Log.Info("Ensuring lists...");
-                    ListBuilder.EnsureTeamList(web);
-                    ListBuilder.EnsureScoreList(web);
-                    ListBuilder.EnsureStatsList(web);
+                    Builder.EnsureLists(web);
 
                     Log.Info("Let the game begin!");
 
-                    var game = new Game();
+                    var game = new Game(web);
 
                     new Thread(() =>
                         {

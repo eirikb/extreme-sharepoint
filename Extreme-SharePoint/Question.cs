@@ -7,7 +7,7 @@ namespace Eirikb.SharePoint.Extreme
     public interface IQuestion
     {
         int Level { get; }
-        bool Run(string line);
+        int Run(string line);
         string Question { get; }
     }
 
