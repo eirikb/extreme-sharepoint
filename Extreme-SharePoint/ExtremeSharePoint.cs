@@ -8,11 +8,11 @@ using log4net;
 
 namespace Eirikb.SharePoint.Extreme
 {
-    internal class Program
+    public static class ExtremeSharePoint
     {
         private static readonly ILog Log = LogManager.GetLogger("Extreme-SharePoint");
 
-        private static void Main()
+        public static void Start(Type start)
         {
             Log.Info("Connecting to SharePoint...");
             using (var site = new SPSite("http://localhost"))
@@ -42,9 +42,8 @@ namespace Eirikb.SharePoint.Extreme
                             }
                         }).Start();
 
-                    var commands = GetCommands();
-                    var consoleRunner = new ConsoleModeCommand(GetCommands);
-                    commands = commands.Concat(new[] {consoleRunner});
+                    var commands = GetCommands(start);
+                    commands = commands.Concat(GetCommands(typeof (ExtremeSharePoint)));
 
                     while (true)
                     {
@@ -61,9 +60,9 @@ namespace Eirikb.SharePoint.Extreme
             }
         }
 
-        private static IEnumerable<ConsoleCommand> GetCommands()
+        private static IEnumerable<ConsoleCommand> GetCommands(Type start)
         {
-            return ConsoleCommandDispatcher.FindCommandsInSameAssemblyAs(typeof (Program));
+            return ConsoleCommandDispatcher.FindCommandsInSameAssemblyAs(start);
         }
     }
 }

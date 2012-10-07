@@ -1,24 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
-namespace Eirikb.SharePoint.Extreme.Questions
+namespace Eirikb.SharePoint.Extreme
 {
     public interface IQuestion
     {
         int Level { get; }
         bool Run(string line);
+        string Question { get; }
     }
 
     public class Question
     {
         public static List<IQuestion> GetQuestions(int level)
         {
-            return Assembly.GetExecutingAssembly().GetTypes().
-                Where(t => t.GetInterfaces().Contains(typeof (IQuestion)) && t.GetConstructor(Type.EmptyTypes) != null).
-                Select(Activator.CreateInstance).Cast<IQuestion>().
-                Where(q => q.Level <= level).ToList();
+            return
+                AppDomain.CurrentDomain.GetAssemblies().ToList()
+                    .SelectMany(s => s.GetTypes())
+                    .Where(
+                        t => t.GetInterfaces().Contains(typeof (IQuestion)) && t.GetConstructor(Type.EmptyTypes) != null)
+                    .Select(Activator.CreateInstance).Cast<IQuestion>()
+                    .Where(q => q.Level <= level).ToList();
         }
 
         public static IQuestion GetRandomQuestion(int level)
