@@ -36,7 +36,6 @@ namespace Eirikb.SharePoint.Extreme
                                 {
                                     if (!game.Run) break;
                                     game.Ping();
-                                    Log.Info("Test");
                                     Monitor.Wait(game, TimeSpan.FromSeconds(5));
                                     if (!game.Run) break;
                                 }

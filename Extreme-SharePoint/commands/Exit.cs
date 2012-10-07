@@ -1,6 +1,7 @@
-﻿using ManyConsole;
+﻿using System;
+using ManyConsole;
 
-namespace Eirikb.SharePoint.Extreme.commands
+namespace Eirikb.SharePoint.Extreme.Commands
 {
     public class Exit : ConsoleCommand
     {
@@ -11,6 +12,7 @@ namespace Eirikb.SharePoint.Extreme.commands
 
         public override int Run(string[] remainingArguments)
         {
+            Console.WriteLine("Good bye proud knight");
             return -2;
         }
     }

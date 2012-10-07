@@ -1,7 +1,7 @@
 ﻿using System;
 using ManyConsole;
 
-namespace Eirikb.SharePoint.Extreme.commands
+namespace Eirikb.SharePoint.Extreme.Commands
 {
         public class GetTime : ConsoleCommand
         {
