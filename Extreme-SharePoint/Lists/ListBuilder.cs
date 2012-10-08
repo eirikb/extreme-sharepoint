@@ -18,7 +18,7 @@ namespace Eirikb.SharePoint.Extreme.Lists
         public Guid LookupList;
     }
 
-    public static class Builder
+    public static class ListBuilder
     {
         private static readonly ILog Log = LogManager.GetLogger("Extreme-SharePoint");
 

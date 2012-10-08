@@ -6,7 +6,6 @@ using System.Threading;
 using Eirikb.SharePoint.Extreme.Lists;
 using ManyConsole;
 using Microsoft.SharePoint;
-using Microsoft.SharePoint.Linq;
 using log4net;
 
 namespace Eirikb.SharePoint.Extreme
@@ -16,6 +15,9 @@ namespace Eirikb.SharePoint.Extreme
         private static readonly ILog Log = LogManager.GetLogger("Extreme-SharePoint");
 
         public static string URL = "http://localhost";
+        public static Game Game;
+        public static SPWeb Web;
+
 
         public static void Start(Type start)
         {
@@ -25,25 +27,25 @@ namespace Eirikb.SharePoint.Extreme
             Log.Info("Connecting to SharePoint...");
             using (var site = new SPSite(URL))
             {
-                using (var web = site.OpenWeb())
+                using (Web = site.OpenWeb())
                 {
                     Log.Info("Ensuring lists...");
-                    Builder.EnsureLists(web);
+                    ListBuilder.EnsureLists(Web);
 
                     Log.Info("Let the game begin!");
 
-                    var game = new Game(web);
+                    Game = new Game(Web);
 
                     new Thread(() =>
                         {
                             while (true)
                             {
-                                lock (game)
+                                lock (Game)
                                 {
-                                    if (!game.Run) break;
-                                    game.Ping();
-                                    Monitor.Wait(game, TimeSpan.FromSeconds(5));
-                                    if (!game.Run) break;
+                                    if (!Game.Run) break;
+                                    Game.Ping();
+                                    Monitor.Wait(Game, TimeSpan.FromSeconds(5));
+                                    if (!Game.Run) break;
                                 }
                             }
                         }).Start();
@@ -54,15 +56,15 @@ namespace Eirikb.SharePoint.Extreme
                     while (true)
                     {
                         var line = Console.ReadLine();
-                        var cmd = new string[]{};
+                        var cmd = new string[] {};
                         if (line != null) cmd = line.Split(' ');
                         var result = ConsoleCommandDispatcher.DispatchCommand(commands, cmd, Console.Out);
                         if (result < -1) break;
                     }
-                    lock (game)
+                    lock (Game)
                     {
-                        game.Run = false;
-                        Monitor.Pulse(game);
+                        Game.Run = false;
+                        Monitor.Pulse(Game);
                     }
                 }
             }

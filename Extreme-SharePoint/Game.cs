@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
+using Eirikb.SharePoint.Extreme.Lists;
 using Microsoft.SharePoint;
 using log4net;
 
 namespace Eirikb.SharePoint.Extreme
 {
-    internal class Game
+    public class Game
     {
         private static readonly ILog Log = LogManager.GetLogger("Extreme-SharePoint");
         private readonly SPWeb _web;
@@ -28,51 +28,39 @@ namespace Eirikb.SharePoint.Extreme
 
             var stats = _web.Lists["Stats"];
 
-            Lists.Lists.GetTeamsWithPlayer(_web).ForEach(team =>
+            ListsQuery.GetTeamsWithPlayer(_web).ForEach(team =>
                 {
                     var players = team["Players"] as SPFieldUserValueCollection;
                     if (players == null) return;
                     var player = players.First();
 
-                    var teamScore = Lists.Lists.GetTeamScore(_web, team);
+                    var teamScore = ListsQuery.GetTeamScore(_web, team);
                     var question = Question.GetRandomQuestion(Level);
-                    var host = team["Host"];
-
-                    using (var client = new WebClient())
+                    if (question == null)
                     {
-                        var url = new UriBuilder("" + host) {Query = question.Question}.Uri.AbsoluteUri;
-                        if (!url.EndsWith("/")) url += "/";
-                        string result = null;
-                        try
-                        {
-                            Log.DebugFormat("Sending request to {0}", url);
-                            result = client.DownloadString(url);
-                        }
-                        catch (Exception e)
-                        {
-                            Log.Error("Request to team " + team.Title, e);
-                        }
-                        Log.DebugFormat("Got result: {0}", result);
-                        var points = string.IsNullOrEmpty(result) ? -2 : question.Run(result);
-                        Log.DebugFormat("Points : {0}", points);
-                        var statsItem = stats.AddItem();
-                        statsItem["Success"] = points > 0;
-                        statsItem["Author"] = player;
-                        statsItem["Time"] = DateTime.Now;
-                        statsItem.Update();
-
-                        int currentScore;
-                        if (!int.TryParse("" + teamScore["Score"], out currentScore))
-                        {
-                            Log.WarnFormat("Unable to format {0} to int for teamscore of team {1}",
-                                           teamScore["Score"],
-                                           team.Title);
-                            return;
-                        }
-                        currentScore += points;
-                        teamScore["Score"] = currentScore;
-                        teamScore.Update();
+                        Log.Debug("No question found");
+                        return;
                     }
+                    var result = Client.Request(team, question);
+                    var points = string.IsNullOrEmpty(result) ? -2 : question.Run(result);
+                    Log.DebugFormat("Points : {0}", points);
+                    var statsItem = stats.AddItem();
+                    statsItem["Success"] = points > 0;
+                    statsItem["Author"] = player;
+                    statsItem["Time"] = DateTime.Now;
+                    statsItem.Update();
+
+                    int currentScore;
+                    if (!int.TryParse("" + teamScore["Score"], out currentScore))
+                    {
+                        Log.WarnFormat("Unable to format {0} to int for teamscore of team {1}",
+                                       teamScore["Score"],
+                                       team.Title);
+                        return;
+                    }
+                    currentScore += points;
+                    teamScore["Score"] = currentScore;
+                    teamScore.Update();
                 });
         }
     }

@@ -56,14 +56,15 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client.cs" />
+    <Compile Include="Commands\QuestionLevel.cs" />
     <Compile Include="Commands\Exit.cs" />
     <Compile Include="Commands\LogLevel.cs" />
     <Compile Include="Commands\Ls.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="Commands\GetTime.cs" />
-    <Compile Include="Lists\Builder.cs" />
+    <Compile Include="Lists\ListBuilder.cs" />
     <Compile Include="ExtremeSharePoint.cs" />
-    <Compile Include="Lists\Lists.cs" />
+    <Compile Include="Lists\ListsQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Question.cs" />
   </ItemGroup>

@@ -27,6 +27,7 @@ namespace Eirikb.SharePoint.Extreme
         public static IQuestion GetRandomQuestion(int level)
         {
             var questions = GetQuestions(level);
+            if (questions.Count == 0) return null;
             return questions[new Random().Next(questions.Count)];
         }
     }

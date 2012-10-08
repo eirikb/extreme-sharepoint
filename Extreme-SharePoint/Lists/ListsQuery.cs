@@ -6,7 +6,7 @@ using log4net;
 
 namespace Eirikb.SharePoint.Extreme.Lists
 {
-    public static class Lists
+    public static class ListsQuery
     {
         private static readonly ILog Log = LogManager.GetLogger("Extreme-SharePoint");
 
