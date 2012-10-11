@@ -25,11 +25,19 @@ namespace Eirikb.SharePoint.Extreme.Commands
                 return 0;
             }
             var teams = ListsQuery.GetTeams(web);
+            teams.Sort((a, b) =>
+                {
+                    int sa;
+                    if (!int.TryParse("" + a["Score"], out sa)) return 0;
+                    int sb;
+                    if (!int.TryParse("" + b["Score"], out sb)) return 0;
+                    return sb - sa;
+                });
             teams.ForEach(team =>
                 {
                     var players = team["Players"] as SPFieldUserValueCollection;
                     var ps = players != null ? string.Join(", ", players.Select(u => u.User.Name).ToArray()) : "";
-                    Console.WriteLine("{0} - {1} - {2}", team.Title, team["Score"], ps);
+                    Console.WriteLine("{0} - {1} - {2} - {3}", team.Title, team["Score"], ps, team["Author"]);
                 });
             return 0;
         }
