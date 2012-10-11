@@ -7,12 +7,13 @@ namespace Eirikb.SharePoint.Extreme
     public interface IQuestion
     {
         int Level { get; }
-        int Run(string line);
         string Question { get; }
+        int Run(string line);
     }
 
-    public class Question
+    public static class Question
     {
+
         public static List<IQuestion> GetQuestions(int level)
         {
             return
@@ -27,8 +28,7 @@ namespace Eirikb.SharePoint.Extreme
         public static IQuestion GetRandomQuestion(int level)
         {
             var questions = GetQuestions(level);
-            if (questions.Count == 0) return null;
-            return questions[new Random().Next(questions.Count)];
+            return questions.Count == 0 ? null : questions[new Random().Next(questions.Count)];
         }
     }
 }

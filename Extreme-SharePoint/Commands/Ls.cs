@@ -28,9 +28,8 @@ namespace Eirikb.SharePoint.Extreme.Commands
             teams.ForEach(team =>
                 {
                     var players = team["Players"] as SPFieldUserValueCollection;
-                    var score = ListsQuery.GetTeamScore(web, team);
                     var ps = players != null ? string.Join(", ", players.Select(u => u.User.Name).ToArray()) : "";
-                    Console.WriteLine("{0} - {1} - {2}", team.Title, score["Score"], ps);
+                    Console.WriteLine("{0} - {1} - {2}", team.Title, team["Score"], ps);
                 });
             return 0;
         }

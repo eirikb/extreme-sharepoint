@@ -9,26 +9,24 @@ namespace Eirikb.SharePoint.Extreme
     {
         private static readonly ILog Log = LogManager.GetLogger("Extreme-SharePoint");
 
-        public static string Request(SPListItem team, IQuestion question)
+        public static void Request(SPListItem team, IQuestion question, DownloadStringCompletedEventHandler callback)
         {
             var host = "" + team["Host"];
-            string result = null;
             using (var client = new WebClient())
             {
-                var url = new UriBuilder(host) {Query = question.Question}.Uri.AbsoluteUri;
-                if (!url.EndsWith("/")) url += "/";
+                var query = string.Format("q={0}", question.Question);
+                var url = new UriBuilder(host) {Query = query}.Uri;
                 try
                 {
                     Log.DebugFormat("Sending request to {0}", url);
-                    result = client.DownloadString(url);
+                    client.DownloadStringAsync(url);
+                    client.DownloadStringCompleted += callback;
                 }
                 catch (Exception e)
                 {
                     Log.Error("Request to team " + team.Title, e);
                 }
-                Log.DebugFormat("Got result: {0}", result);
             }
-            return result;
         }
     }
 }
