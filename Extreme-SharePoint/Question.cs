@@ -8,7 +8,7 @@ namespace Eirikb.SharePoint.Extreme
     {
         int Level { get; }
         string Question { get; }
-        int Run(string line);
+        bool Run(string line);
     }
 
     public static class Question
