@@ -24,7 +24,7 @@ For the user hosting the dojo (admin, overlord) there will be a personalized vie
 ### Running
 Once Extreme-SharePoint is up and running it will do these tasks in a never-ending loop:  
 
-  * Build a _Question_ (Any `: IQuestion`) with a **Level** lower or equal to _current level_.
+  * Build a _Question_ (Any `: IQuestion`) with a **Level** lower or equal to _current level_. For examples see [Avento demo](https://github.com/eirikb/extreme-sharepoint/tree/master/demo/Avento/Avento).
   * Fetch all teams URLs.
   * Asynchronously query all clients with the question, with these rules based on response:
     * Correct answer: Score is *incremented* with **Level**
