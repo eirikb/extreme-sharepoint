@@ -1,4 +1,4 @@
-# [Extreme Startup](https://github.com/rchatley/extreme_startup) Startup) SharePoint style
+# [Extreme Startup](https://github.com/rchatley/extreme_startup) SharePoint style
 
 This is a library (DLL) you can use to host your own Extreme Startup with SharePoint.  
 
