@@ -34,9 +34,14 @@ Once Extreme-SharePoint is up and running it will do these tasks in a never-endi
   * Update list data.
   * Sleep for 5 seconds.
 
+## Client for players
+There is an [example client](https://github.com/eirikb/extreme-sharepoint/blob/master/demo/Client/Program.cs) in demos directory. This is not a very good client, but it will work to understand the concept and as a fallback in case everything else fails.  
+Clients can be written in any preferable language in any environment, only need to respond to HTTP requests
+
 ## Hosting your own dojo
 
-Please see the [Avento branch](https://github.com/eirikb/extreme-sharepoint/tree/avento/Avento) from our last game at my work as an example.
+Please see the [Avento demo](https://github.com/eirikb/extreme-sharepoint/tree/master/demo/Avento/Avento) from our last game at my work as an example.  
+This is the actual Extreme Startup I hosted at work. Note that questions are in Norwegian.
 
   1. Reference **Extreme-SharePoint.dll**
   2. Add your own question
