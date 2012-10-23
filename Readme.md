@@ -41,7 +41,7 @@ Please see the [Avento branch](https://github.com/eirikb/extreme-sharepoint/tree
   1. Reference **Extreme-SharePoint.dll**
   2. Add your own question
 
-```
+```C#
 class MyQuestion: IQuestion
 {
   public int Level
@@ -60,7 +60,7 @@ class MyQuestion: IQuestion
 ```
   3. Start the server
 
-```
+```C#
 private static void Main()
 {
   ExtremeSharePoint.Start("http://localhost", typeof(Program));
