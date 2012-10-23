@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
 using Microsoft.SharePoint;
 using log4net;
 
@@ -64,17 +66,19 @@ namespace Eirikb.SharePoint.Extreme.Lists
             var list = web.Lists.TryGetList("Stats");
             if (list != null) return list;
             var teamsList = web.Lists["Teams"];
-            list = BuildList(web, "Stats", new List<Field>
+            var fields = new List<Field>
                 {
-                    new LookupField{Title = "Team", LookupList = teamsList.ID, Required = true, Hidden = true},
-                    new Field {Title = "Success", Type = SPFieldType.Boolean, Required = true},
+                    new LookupField {Title = "Team", LookupList = teamsList.ID, Required = true, Hidden = true},
                     new Field {Title = "Time", Type = SPFieldType.DateTime, Required = true},
                     new Field {Title = "Question", Type = SPFieldType.Text, Required = false, Hidden = true},
-                    new Field {Title = "Answer", Type = SPFieldType.Text, Required = false, Hidden = true},
-                    new Field {Title = "Points", Type = SPFieldType.Number, Required = false, Hidden = true},
+                    new Field {Title = "Answer", Type = SPFieldType.Text, Required = false},
+                    new Field {Title = "Points", Type = SPFieldType.Number, Required = false},
                     new Field {Title = "Level", Type = SPFieldType.Number, Required = false, Hidden = true},
-                });
+                };
+            list = BuildList(web, "Stats", fields);
+            // Read items that were created by the user
             list.ReadSecurity = 2;
+            // Create and Edit access: None
             list.WriteSecurity = 4;
             list.Update();
 
@@ -87,6 +91,9 @@ namespace Eirikb.SharePoint.Extreme.Lists
             titleField.ShowInViewForms = false;
             titleField.Update();
 
+            var viewFields = new StringCollection();
+            viewFields.AddRange(fields.Select(field => field.Title).ToArray());
+            list.Views.Add("Godmode", viewFields, null, 100, true, false, SPViewCollection.SPViewType.Html, true);
             return list;
         }
 
@@ -112,7 +119,8 @@ namespace Eirikb.SharePoint.Extreme.Lists
                         spField.ShowInViewForms = false;
                         spField.Update();
                         spField = list.Fields.GetFieldByInternalName(field.Title);
-                    } else view.ViewFields.Add(spField);
+                    }
+                    else view.ViewFields.Add(spField);
 
                     if (!field.AllowMulti) return;
                     var spLookupField = spField as SPFieldLookup;
