@@ -55,6 +55,7 @@ namespace Eirikb.SharePoint.Extreme.Lists
             view.ViewFields.Add("Score");
             view.Update();
 
+            // Create and Edit access: Create items and edit items that were created by the user 
             list.WriteSecurity = 2;
             list.Update();
 
