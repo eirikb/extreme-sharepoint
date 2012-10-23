@@ -75,7 +75,7 @@ namespace Eirikb.SharePoint.Extreme
                 result = args.Result;
                 Log.DebugFormat("Got result {0}", result);
                 if (string.IsNullOrEmpty(result)) points = -(question.Level/2);
-                else points = question.Run(result) ? question.Level : -question.Level/2;
+                else points = question.Run(result) ? question.Level : -(question.Level/2);
                 Log.DebugFormat("Points : {0}", points);
             }
             var stats = web.Lists["Stats"];
