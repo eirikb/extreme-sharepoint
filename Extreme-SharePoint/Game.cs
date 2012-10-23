@@ -67,7 +67,7 @@ namespace Eirikb.SharePoint.Extreme
                     Log.InfoFormat("Request failed for team {0}! {1} - {2}", team.Title,
                                    args.Error.Message, args.Error.InnerException);
                 else Log.InfoFormat("Request cancelled for team {0}", team.Title);
-                points = -question.Level;
+                points = -(int) (question.Level * 1.5);
                 result = "Server error";
             }
             else
@@ -75,7 +75,7 @@ namespace Eirikb.SharePoint.Extreme
                 result = args.Result;
                 Log.DebugFormat("Got result {0}", result);
                 if (string.IsNullOrEmpty(result)) points = -(question.Level/2);
-                else points = question.Run(result) ? question.Level : -(question.Level/2);
+                else points = question.Run(result) ? question.Level : -question.Level;
                 Log.DebugFormat("Points : {0}", points);
             }
             var stats = web.Lists["Stats"];
