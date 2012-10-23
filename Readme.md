@@ -41,27 +41,31 @@ Please see the [Avento branch](https://github.com/eirikb/extreme-sharepoint/tree
   1. Reference **Extreme-SharePoint.dll**
   2. Add your own question
 
-    class MyQuestion: IQuestion
-    {
-        public int Level
-        {
-            get { return 2; }
-        }
-        public string Question
-        {
-            get { return "Share..."; }
-        }
-        public bool Run(string line)
-        {
-            return line.ToLower() == "point";
-        }
-    }
+```
+class MyQuestion: IQuestion
+{
+  public int Level
+  {
+    get { return 2; }
+  }
+  public string Question
+  {
+    get { return "Share..."; }
+  }
+  public bool Run(string line)
+  {
+    return line.ToLower() == "point";
+  }
+}
+```
   3. Start the server
 
-    private static void Main()
-    {
-        ExtremeSharePoint.Start("http://localhost", typeof(Program));
-    }
+```
+private static void Main()
+{
+  ExtremeSharePoint.Start("http://localhost", typeof(Program));
+}
+```
 
 Any class with `: IQuestion` will be automatically included into your application.
 
