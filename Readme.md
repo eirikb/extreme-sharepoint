@@ -9,7 +9,7 @@ Keeping track of teams, this is where players will register
 
   * their team with a name (Title),
   * players in team (only for information, not used),
-  * and an URL Extreme-SharePoint will use to query questions against.
+  * and a Web Service URL for Extreme-SharePoint to send questions to.
 
 ### Stats list
 
